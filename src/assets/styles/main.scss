@@ -1,22 +1,57 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 @import url("~@mdi/font/css/materialdesignicons.min.css");
+@import url("https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css");
 @import "~bulma/sass/utilities/_all";
 
 $body-family: "Roboto", sans-serif;
 $section-padding: 1rem 0.5rem;
 
 $primary: #0779e4;
+$heart: #ff2e63;
+$heart-invert: findColorInvert($heart);
+$footer-background-color: #f5f5f5;
 
 $colors: (
-    "white": ($white, $black),
-    "black": ($black, $white),
-    "light": ($light, $light-invert),
-    "dark": ($dark, $dark-invert),
-    "primary": ($primary, $primary-invert),
-    "info": ($info, $info-invert),
-    "success": ($success, $success-invert),
-    "warning": ($warning, $warning-invert),
-    "danger": ($danger, $danger-invert),
+  "white": (
+    $white,
+    $black,
+  ),
+  "black": (
+    $black,
+    $white,
+  ),
+  "light": (
+    $light,
+    $light-invert,
+  ),
+  "dark": (
+    $dark,
+    $dark-invert,
+  ),
+  "primary": (
+    $primary,
+    $primary-invert,
+  ),
+  "info": (
+    $info,
+    $info-invert,
+  ),
+  "success": (
+    $success,
+    $success-invert,
+  ),
+  "warning": (
+    $warning,
+    $warning-invert,
+  ),
+  "danger": (
+    $danger,
+    $danger-invert,
+  ),
+  "heart": (
+    $heart,
+    $heart-invert,
+  ),
 );
 
 @import "~bulma";

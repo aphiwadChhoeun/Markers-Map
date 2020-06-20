@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tabledata__container">
     <b-table
       :data="data"
       :columns="columns"
@@ -24,4 +24,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.tabledata__container {
+  padding-top: 2rem;
+}
+</style>

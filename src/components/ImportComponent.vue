@@ -20,31 +20,28 @@
       </div>
     </div>
 
-    <table-data :data="data" :columns="fields" />
+    <b-loading :active.sync="isLoading"></b-loading>
   </div>
 </template>
 
 <script>
 import Papa from "papaparse";
-import TableData from "./TableData";
+import { mapMutations } from "vuex";
 
 export default {
   name: "ImportComponent",
 
-  components: {
-    TableData,
-  },
-
   data() {
     return {
       file: null,
-      data: [],
-      fields: [],
+      isLoading: false,
     };
   },
 
   watch: {
     file(f) {
+      this.isLoading = true;
+
       Papa.parse(f, {
         header: true,
         complete: (results) => {
@@ -74,11 +71,18 @@ export default {
             }
           });
 
-          this.fields = fields;
-          this.data = data;
+          this.setData({
+            headers: fields,
+            entries: data,
+          });
+          this.isLoading = false;
         },
       });
     },
+  },
+
+  methods: {
+    ...mapMutations(["setData"]),
   },
 };
 </script>
