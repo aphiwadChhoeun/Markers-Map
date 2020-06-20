@@ -1,18 +1,22 @@
 <template>
-  <div id="app" class="container">
-    <section class="section">
-      <h1 class="is-size-1">Markers Map</h1>
-      <ImportComponent />
-    </section>
+  <div id="app">
+    <div class="container">
+      <Header />
+      <section class="section">
+        <ImportComponent />
+      </section>
+    </div>
   </div>
 </template>
 
 <script>
+import Header from "./components/Header.vue";
 import ImportComponent from "./components/ImportComponent.vue";
 
 export default {
   name: "App",
   components: {
+    Header,
     ImportComponent,
   },
 };

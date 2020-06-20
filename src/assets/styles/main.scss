@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-@import url('~@mdi/font/css/materialdesignicons.min.css');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("~@mdi/font/css/materialdesignicons.min.css");
 @import "~bulma/sass/utilities/_all";
 
-$body-family: 'Roboto', sans-serif;
+$body-family: "Roboto", sans-serif;
+$section-padding: 1rem 0.5rem;
 
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
