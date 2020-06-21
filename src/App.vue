@@ -9,7 +9,11 @@
           :data="data.entries"
           :columns="data.headers"
         />
-        <map-viewer v-if="data.entries" :data="data.entries" />
+        <map-viewer
+          v-if="data.entries"
+          :data="data.entries"
+          v-on:canvas-ready="canvasReady"
+        />
       </section>
       <footer-component />
     </div>
@@ -46,6 +50,18 @@ export default {
     MapViewer,
   },
 
+  data() {
+    return {
+      canvas: null,
+    };
+  },
+
   computed: mapState(["data"]),
+
+  methods: {
+    canvasReady(canvas) {
+      this.canvas = canvas;
+    },
+  },
 };
 </script>

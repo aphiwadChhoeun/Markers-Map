@@ -74,35 +74,71 @@ export default {
       let bounds = new mapboxgl.LngLatBounds();
 
       this.data.forEach((item) => {
+        // queue requests for converting addresses to locations
         promises.push(GeoService.search(item.address));
       });
 
+      // resolve all requests
       Promise.all(promises).then((results) => {
         let rawResults = results.map((res) => res.data);
 
-        rawResults.forEach((res) => {
+        rawResults.forEach((res, index) => {
           let lnglat = res.features[0].geometry.coordinates;
-          new mapboxgl.Marker().setLngLat(lnglat).addTo(this.map);
+
+          // creating marker
+          let el = document.createElement("div");
+          el.classList.add("custom__marker");
+          el.style.filter = `hue-rotate(${index * 25}deg)`;
+          new mapboxgl.Marker(el).setLngLat(lnglat).addTo(this.map);
+
+          // making sure bounds contains all markers to fit the map
           bounds.extend(lnglat);
         });
 
-        console.log(bounds);
         this.map.fitBounds(bounds, {
-          padding: { top: 65, bottom: 25, left: 25, right: 25 },
+          padding: { top: 65, bottom: 65, left: 45, right: 45 },
         });
+
+        this.$emit("canvas-ready", this.map.getCanvas());
       });
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+$markerColor: #e23e57;
+$markerSize: 30px;
+
 .mapviewer__container {
   padding-top: 2rem;
 
   #map-container {
     width: 100%;
     min-height: 450px;
+  }
+
+  .custom__marker {
+    position: absolute;
+    width: $markerSize;
+    height: $markerSize;
+    border-radius: 50%;
+    background: $markerColor;
+    // filter: hue-rotate(20deg);
+
+    &:before {
+      position: absolute;
+      top: $markerSize - 6;
+      left: $markerSize / 2;
+      content: "";
+      display: block;
+      width: 0;
+      height: 0;
+      border-top: $markerSize / 2 solid $markerColor;
+      border-left: $markerSize / 2.5 solid transparent;
+      border-right: $markerSize / 2.5 solid transparent;
+      transform: translateX(-50%);
+    }
   }
 }
 </style>

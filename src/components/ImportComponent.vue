@@ -2,7 +2,7 @@
   <div class="import__container">
     <div class="columns is-multiline">
       <div class="column is-full">
-        <span class="label">1. Import CSV file</span>
+        <span class="label">Start by uploading an CSV file (<a href="/sample.csv" download>sample.csv</a>):</span>
       </div>
 
       <div class="column">
