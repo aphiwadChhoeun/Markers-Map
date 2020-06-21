@@ -51,7 +51,7 @@ $markerSize: 20px;
 }
 
 .marker__indicator {
-  position: absolute;
+  position: relative;
   width: $markerSize;
   height: $markerSize;
   border-radius: 50%;
