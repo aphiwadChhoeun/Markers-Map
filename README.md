@@ -20,9 +20,5 @@ npm run build
 npm run lint
 ```
 
-### TODO
-* pin all parsed location from csv file onto map viewer
-* export final result into images (*.png, *.jpg)
-
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
