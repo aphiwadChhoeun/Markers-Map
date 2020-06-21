@@ -5,40 +5,44 @@
 </template>
 
 <script>
+import GeoService, { API_KEY } from "../services/GeoService";
 import mapboxgl from "mapbox-gl";
 
 export default {
   name: "MapViewer",
 
+  props: {
+    data: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+  },
+
   data() {
     return {
       map: null,
-      center: {
-        lat: 40,
-        lng: -74.5,
-      },
     };
-  },
-
-  watch: {
-    center(location) {
-      this.map.panTo([location.lng, location.lat], { duration: 500 });
-    },
   },
 
   mounted() {
     this.initMap();
-    this.fetchCurrentLocation();
+    // this.fetchCurrentLocation();
   },
 
   methods: {
     initMap() {
-      mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_KEY;
+      mapboxgl.accessToken = API_KEY;
       const map = new mapboxgl.Map({
         container: "map-container",
         style: "mapbox://styles/mapbox/streets-v11", // stylesheet location
-        center: [this.center.lng, this.center.lat], // starting position [lng, lat]
+        center: [-122.4726194, 37.7577627], // starting position [lng, lat]
         zoom: 10, // starting zoom
+      });
+
+      map.on("load", () => {
+        this.convertAddressesToMarkers();
       });
 
       this.map = map;
@@ -48,10 +52,10 @@ export default {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            this.center = {
+            console.log({
               lat: position.coords.latitude,
               lng: position.coords.longitude,
-            };
+            });
           },
           () => {
             this.$buefy.toast.open({
@@ -63,6 +67,30 @@ export default {
           }
         );
       }
+    },
+
+    convertAddressesToMarkers() {
+      let promises = [];
+      let bounds = new mapboxgl.LngLatBounds();
+
+      this.data.forEach((item) => {
+        promises.push(GeoService.search(item.address));
+      });
+
+      Promise.all(promises).then((results) => {
+        let rawResults = results.map((res) => res.data);
+
+        rawResults.forEach((res) => {
+          let lnglat = res.features[0].geometry.coordinates;
+          new mapboxgl.Marker().setLngLat(lnglat).addTo(this.map);
+          bounds.extend(lnglat);
+        });
+
+        console.log(bounds);
+        this.map.fitBounds(bounds, {
+          padding: { top: 65, bottom: 25, left: 25, right: 25 },
+        });
+      });
     },
   },
 };

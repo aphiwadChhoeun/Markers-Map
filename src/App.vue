@@ -9,7 +9,7 @@
           :data="data.entries"
           :columns="data.headers"
         />
-        <map-viewer v-if="data.entries" />
+        <map-viewer v-if="data.entries" :data="data.entries" />
       </section>
       <footer-component />
     </div>
