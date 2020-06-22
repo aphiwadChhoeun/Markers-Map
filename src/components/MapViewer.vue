@@ -91,6 +91,7 @@ export default {
       // resolve all requests
       Promise.all(promises).then((results) => {
         let rawResults = results.map((res) => res.data);
+        console.log(rawResults);
 
         rawResults.forEach((res, index) => {
           let lnglat = res.features[0].geometry.coordinates;
@@ -98,9 +99,19 @@ export default {
           // creating marker
           let el = document.createElement("div");
           el.classList.add("custom__marker");
-          el.style.filter = `hue-rotate(${index * 25}deg)`;
-          let marker = new mapboxgl.Marker(el).setLngLat(lnglat);
-          marker.addTo(this.map);
+          let marker = new mapboxgl.Marker({
+            element: el,
+            anchor: "bottom",
+          })
+            .setLngLat(lnglat)
+            .setPopup(
+              new mapboxgl.Popup({
+                closeButton: false,
+                anchor: "bottom",
+                className: "custom__popup",
+              }).setHTML(`<div>${this.data[index].company}</div>`)
+            )
+            .addTo(this.map);
           this.markers.push(marker);
 
           // making sure bounds contains all markers to fit the map
@@ -108,7 +119,7 @@ export default {
         });
 
         this.map.fitBounds(bounds, {
-          padding: { top: 65, bottom: 65, left: 45, right: 45 },
+          padding: { top: 65, bottom: 25, left: 45, right: 45 },
         });
 
         this.$emit("canvas-ready", this.map.getCanvas());
@@ -132,11 +143,11 @@ $markerSize: 30px;
 
   .custom__marker {
     position: absolute;
+    top: -$markerSize / 2;
     width: $markerSize;
     height: $markerSize;
     border-radius: 50%;
     background: $markerColor;
-    // filter: hue-rotate(20deg);
 
     &:before {
       position: absolute;
@@ -151,6 +162,10 @@ $markerSize: 30px;
       border-right: $markerSize / 2.5 solid transparent;
       transform: translateX(-50%);
     }
+  }
+
+  .custom__popup {
+    top: -($markerSize + $markerSize / 2);
   }
 }
 </style>
