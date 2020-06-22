@@ -1,6 +1,6 @@
 <template>
   <div class="tabledata__container">
-    <b-table :data="data" :paginated="data.length > 5" :per-page="5">
+    <b-table :data="data" :paginated="data.length > 10" :per-page="10">
       <template slot-scope="props">
         <b-table-column field="company" label="Company">
           {{ props.row.company }}

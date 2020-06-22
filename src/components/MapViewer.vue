@@ -23,7 +23,17 @@ export default {
   data() {
     return {
       map: null,
+      markers: [],
     };
+  },
+
+  watch: {
+    data() {
+      this.markers.forEach((marker) => {
+        marker.remove();
+      });
+      this.convertAddressesToMarkers();
+    },
   },
 
   mounted() {
@@ -89,7 +99,9 @@ export default {
           let el = document.createElement("div");
           el.classList.add("custom__marker");
           el.style.filter = `hue-rotate(${index * 25}deg)`;
-          new mapboxgl.Marker(el).setLngLat(lnglat).addTo(this.map);
+          let marker = new mapboxgl.Marker(el).setLngLat(lnglat);
+          marker.addTo(this.map);
+          this.markers.push(marker);
 
           // making sure bounds contains all markers to fit the map
           bounds.extend(lnglat);
